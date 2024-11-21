@@ -16,8 +16,8 @@ This scripts must be located in the dags volume for Airflow to be able to import
 
 ### How to trigger the dag?
 
-Our PostgreSQL table must be created before triggering the DAG for the first time.[^1]
+Our PostgreSQL table must be created before triggering the DAG for the first time[^1].
 We must pass a `dag_run.conf` in the following format: {"genre": "pop", "limit": "25"}
 
-[^1] Create script can be found at [utils](utils) directory.
+[^1]: Create script can be found at [utils](utils) directory.
 
