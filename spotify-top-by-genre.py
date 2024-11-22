@@ -8,6 +8,7 @@ import spotipy
 import logging
 import pandas as pd
 import time
+import jinja2
 from spotipy.oauth2 import SpotifyClientCredentials
 from datetime import datetime
 
@@ -22,8 +23,8 @@ default_args = {
     "start_date": dates.days_ago(1),
     "client_id": "{{ var.value.spotify_client_id_secret }}",
     "client_secret": "{{ var.value.spotify_client_secret }}",
-    "genre": "{{ dag_run.conf['genre'] }}",
-    "limit": "{{ dag_run.conf['limit']}}"
+    "genre": "{{ dag_run.conf['genre'] or 'reggaeton' }}",
+    "limit": "{{ dag_run.conf['limit'] or '50' }}"
 }
 
 def get_top_songs(**context):
@@ -83,7 +84,8 @@ def upload_csv_to_postgres(**context):
         raise Exception(error)
 
 
-with DAG(dag_id="spotify_top_by_genre", default_args=default_args, schedule_interval="@weekly") as dag:
+with DAG(dag_id="spotify_top_by_genre", default_args=default_args, schedule_interval="@weekly",
+        template_undefined=jinja2.Undefined) as dag:
     top_songs_to_csv = PythonOperator(task_id="top_songs_to_csv", python_callable=get_top_songs, 
                                     templates_dict=default_args, do_xcom_push=True, provide_context=True)
     top_songs_to_postgres = PythonOperator(task_id="top_song_to_postgres", python_callable=upload_csv_to_postgres,
