@@ -21,3 +21,18 @@ We can pass a `dag_run.conf` in the following format: {"genre": "pop", "limit": 
 
 [^1]: Create script can be found at [utils](utils) directory.
 
+## [nifi-pg-monitoring](https://github.com/angelagonzalezp/airflow-example-dags/blob/main/nifi-pg-monitoring.py)
+
+### Tasks
+
+* `get_pg_stats`: makes a request to Nifi API to monitor a Process Group. and stores data to temporary JSON file.
+* `upload_to_mongo`: inserts JSON to MongoDB collection[^2].
+* `remove_json_file`: bash command to remove temp JSON file.
+
+[^2]: Apache Airflow 2.8.0 and higher versions include MongoHook.
+
+### Required Variables and Connections
+
+* Apache Nifi credentials: {"user":"nifi_user","pass":"nifi_password"}, nifi_url
+* Nifi Process Group ID
+* MongoDB connection
