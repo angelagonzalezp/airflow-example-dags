@@ -36,3 +36,18 @@ We can pass a `dag_run.conf` in the following format: {"genre": "pop", "limit": 
 * Apache Nifi credentials: {"user":"nifi_user","pass":"nifi_password"}, nifi_url
 * Nifi Process Group ID
 * MongoDB connection
+
+## [disk-usage-monitoring](https://github.com/angelagonzalezp/airflow-example-dags/blob/main/disk-usage-monitoring.py)
+
+### Tasks
+
+* `get_partitions_usage`: we retrieve information on the disk partitions with psutil module.
+* `no_warning`: if no partition exceeds the disk usage threshold, no actions will be required[^3].
+* `warning_mail`: a mail including the partitions exceeding the defined threshold is sent.
+
+[^3]: Airflow>=2.3.0 allows EmptyOperator.
+
+### Required Variables and Connections
+
+* Disk usage threshold
+* Email/list of emails to send the warning to
